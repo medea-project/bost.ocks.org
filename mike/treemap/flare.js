@@ -41,19 +41,50 @@ privately( function(){
       .attr("y", 6 - margin.top)
       .attr("dy", ".75em");
 
+  function createTreeNode( name, type ) {
+    return {
+      name: name,
+      type: type,
+      _children: [],
+      value: 0
+    };
+  }
+
   d3.tsv(
     "count-participations-by-ar-author-role-institution-country.tsv",
     function(rows) {
       var
-        root = {
-          x: 0,
-          y: 0,
-          dx: width,
-          dy: height,
-          depth: 0
-        };
+        root = createTreeNode( "IPCC", "root" );
 
-      console.log( rows );
+      forEach( rows, function( row ) {
+        var
+          COUNT_KEY = "Total",
+          count = Number( row[COUNT_KEY] ),
+          node = root;
+
+        forEachProperty( row, function( value, key ) {
+          node.value += count;
+
+          if ( key === COUNT_KEY ) {
+            delete node._children;
+            return;
+          }
+
+          var childNode = find( node._children, function( child ) {
+            return child.name === value;
+          });
+
+          if ( childNode === null ) {
+            childNode = createTreeNode( value, key );
+            childNode.parent = node;
+            node._children.push( childNode );
+          }
+
+          node = childNode;
+        });
+      });
+
+      console.log( root );
     }
   );
 
