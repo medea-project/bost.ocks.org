@@ -131,6 +131,13 @@ grandparent.append("text")
     .attr("y", 6 - margin.top)
     .attr("dy", ".75em");
 
+d3.tsv(
+  "count-participations-by-ar-author-role-institution-country.tsv",
+  function(rows) {
+    console.log( rows );
+  }
+);
+
 d3.json("flare.json", function(root) {
   initialize(root);
   accumulate(root);
