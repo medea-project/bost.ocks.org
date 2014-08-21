@@ -84,13 +84,8 @@ privately( function(){
         });
       });
 
-      console.log( root );
-    }
-  );
-
-  d3.json("flare.json", function(root) {
     initialize(root);
-    accumulate(root);
+    // accumulate(root);
     layout(root);
     display(root);
 
