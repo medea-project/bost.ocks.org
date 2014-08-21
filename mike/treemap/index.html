@@ -147,6 +147,15 @@ grandparent.append("text")
 d3.tsv(
   "count-participations-by-ar-author-role-institution-country.tsv",
   function(rows) {
+    var
+      root = {
+        x: 0,
+        y: 0,
+        dx: width,
+        dy: height,
+        depth: 0
+      };
+
     console.log( rows );
   }
 );
