@@ -85,7 +85,6 @@ privately( function(){
       });
 
     initialize(root);
-    // accumulate(root);
     layout(root);
     display(root);
 
@@ -94,16 +93,6 @@ privately( function(){
       root.dx = width;
       root.dy = height;
       root.depth = 0;
-    }
-
-    // Aggregate the values for internal nodes. This is normally done by the
-    // treemap layout, but not here because of our custom implementation.
-    // We also take a snapshot of the original children (_children) to avoid
-    // the children being overwritten when when layout is computed.
-    function accumulate(d) {
-      return (d._children = d.children)
-          ? d.value = d.children.reduce(function(p, v) { return p + accumulate(v); }, 0)
-          : d.value;
     }
 
     // Compute the treemap layout recursively such that each group of siblings
