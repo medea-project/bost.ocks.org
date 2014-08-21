@@ -75,6 +75,85 @@ function forEach( array, callback ) {
 }
 
 /*
+  Find the first item that matches given criterion
+
+  Parameters:
+    array - array, the list of items to check
+    criterion - function( item ), the condition to check,
+                called with each item of the array in turn,
+                it must return true to select the item and end the search,
+                and false otherwise.
+
+  Returns:
+    any, the first item for which criterion() returns true,
+    or null if no such item is found.
+*/
+function find( array, criterion ) {
+  var result = null;
+
+  forEach( array, function( item ) {
+    if ( criterion( item ) ) {
+      result = item;
+      return true;
+    }
+  });
+
+  return result;
+}
+
+/*
+  Wrap a function in a closure that configures given object as context
+
+  Parameters:
+    func - function, the function to wrap
+    object - object, the object to provide as 'this' for the function
+
+  Returns:
+    function, a closure that calls the given function with provided parameters,
+    with the given object configured as 'this', and returns the same value.
+
+  Note:
+  This function calls the apply() method of the given function, and its
+  behavior changes depending on whether the function is in strict mode.
+
+  When the provided function is not in strict mode:
+
+    1) a null argument for context object defaults to the global object
+    2) automatic boxing of arguments is performed
+
+    Reference:
+    https://developer.mozilla.org/en-US/docs/JavaScript/Reference
+      /Functions_and_function_scope/Strict_mode#.22Securing.22_JavaScript
+*/
+function bind( func, object ) {
+  return function() {
+    return func.apply( object, arguments );
+  };
+}
+
+/*
+  Define an alias for a (Native prototype) function
+
+  The alias allows to call the function with the context object
+  as first argument, followed with regular arguments of the function.
+
+  Example:
+    var has = alias( Object.prototype.hasOwnProperty );
+    has( object, name ) === object.hasOwnProperty( name ); // true
+
+  Parameter:
+    func - function, a method part of the prototype of a Constructor
+
+  Dependency:
+    nada/bind.js
+*/
+function alias( func ) {
+  return bind( func.call, func );
+}
+
+var hasOwnProperty = alias( Object.prototype.hasOwnProperty );
+
+/*
   Run given function for each property of given object matching the filter,
   skipping inherited properties
 
