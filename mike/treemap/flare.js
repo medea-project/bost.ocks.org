@@ -61,8 +61,8 @@ privately( function(){
     colorScales = {};
 
   colorScales[ CONTINENT_KEY ] = d3.scale.category10();
-  // colorScales[ INSTITUTION_TYPE_KEY ] = d3.scale.category20();
-  // colorScales[ ROLE_KEY ] = d3.scale.category20b();
+  colorScales[ INSTITUTION_TYPE_KEY ] = d3.scale.category20();
+  colorScales[ ROLE_KEY ] = d3.scale.category20b();
 
   d3.tsv(
     "count-participations-by-ar-author-role-institution-country.tsv",
@@ -78,12 +78,12 @@ privately( function(){
           color = null;
 
         forEachProperty( row, function( value, key ) {
+          node.value += count;
+          node.color = color;
+
           if ( colorScales.hasOwnProperty( key ) ) {
             color = colorScales[ key ]( value );
           }
-
-          node.value += count;
-          node.color = color;
 
           if ( key === COUNT_KEY ) {
             delete node._children;
