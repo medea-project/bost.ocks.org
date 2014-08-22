@@ -33,7 +33,8 @@ rect.parent,
   fill: #777;
 }
 
-.grandparent rect {
+.grandparent rect,
+rect.has-children {
   cursor: pointer;
 }
 

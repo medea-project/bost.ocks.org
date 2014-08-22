@@ -134,7 +134,7 @@ privately( function(){
 
     function display(d) {
       grandparent
-          .datum(d.parent)
+          .datum(d.parent? d.parent.parent : null)
           .on("click", transition)
         .select("text")
           .text(name(d));
@@ -148,8 +148,8 @@ privately( function(){
         .enter().append("g");
 
       g.filter(function(d) { return d._children; })
-          .classed("children", true)
-          .on("click", transition);
+          .classed("children", true);
+//          .on("click", transition);
 
       var childCell =
         g.selectAll(".child")
@@ -158,6 +158,8 @@ privately( function(){
 
       childCell.append("rect")
           .attr("class", "child")
+          .classed("has-children", function(d) { return d._children; })
+          .on("click", transition)
           .call(rect)
         .append("title")
           .text(function(d) { return d.name; });
@@ -168,7 +170,7 @@ privately( function(){
           .call(text);
 
       function transition(d) {
-        if (transitioning || !d) return;
+        if (transitioning || !d || !d._children) return;
         transitioning = true;
 
         var g2 = display(d),
@@ -227,7 +229,7 @@ privately( function(){
 
     function name(d) {
       return d.parent
-          ? name(d.parent) + " > " + d.name
+          ? name(d.parent.parent) + " > " + d.name
           : d.name;
     }
   });
