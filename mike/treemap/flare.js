@@ -222,10 +222,14 @@ privately( function(){
     }
 
     function text(text) {
-      text.attr("x", function(d) { return x(d.x) + 5; })
-          .attr("y", function(d) { return y(d.y) + 10; })
+      var
+        PADDING_X = 5,
+        PADDING_Y = 10;
+
+      text.attr("x", function(d) { return x(d.x) + PADDING_X; })
+          .attr("y", function(d) { return y(d.y) + PADDING_Y; })
           .style("opacity", function(d) {
-            d.w = this.getComputedTextLength() + 5;
+            d.w = this.getComputedTextLength() + PADDING_X;
             return d.dx > d.w ? 1 : 0;
           });
     }
