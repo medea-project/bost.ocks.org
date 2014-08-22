@@ -158,18 +158,22 @@ privately( function(){
 
       childCell.append("rect")
           .attr("class", "child")
-          .call(rect);
+          .call(rect)
+        .append("title")
+          .text(function(d) { return d.name; });
 
       childCell.append("text")
           .attr("dy", ".35em")
           .text(function(d) { return d.name; })
           .call(text);
 
+/*
       g.append("rect")
           .attr("class", "parent")
           .call(rect);
       //  .append("title")
       //    .text(function(d) { return formatNumber(d.value); });
+*/
 
       /* Do not display text of parent nodes
       g.append("text")
