@@ -216,8 +216,12 @@ privately( function(){
     }
 
     function text(text) {
-      text.attr("x", function(d) { return x(d.x) + 6; })
-          .attr("y", function(d) { return y(d.y) + 6; });
+      text.attr("x", function(d) { return x(d.x) + 5; })
+          .attr("y", function(d) { return y(d.y) + 10; })
+          .style("opacity", function(d) {
+            d.w = this.getComputedTextLength() + 5;
+            return d.dx > d.w ? 1 : 0;
+          });
     }
 
     function rect(rect) {
