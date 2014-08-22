@@ -125,7 +125,6 @@ privately( function(){
     initialize(root);
     layout(root);
     var g = display(root);
-    hideOverflowingText(g);
 
     function initialize(root) {
       root.x = root.y = 0;
@@ -221,18 +220,11 @@ privately( function(){
         // Remove the old node when the transition is finished.
         t1.remove().each("end", function() {
           svg.style("shape-rendering", "crispEdges");
-          // adjust text visibility
-          hideOverflowingText(g2);
           transitioning = false;
         });
       }
 
       return g;
-    }
-
-    function text(text) {
-      text.attr("x", function(d) { return x(d.x) + TEXT_PADDING_X; })
-          .attr("y", function(d) { return y(d.y) + TEXT_BASELINE_Y; });
     }
 
     function rectWidth(d) {
@@ -243,6 +235,17 @@ privately( function(){
       return y(d.y + d.dy) - y(d.y);
     }
 
+    function text(text) {
+      text.attr("x", function(d) { return x(d.x) + TEXT_PADDING_X; })
+          .attr("y", function(d) { return y(d.y) + TEXT_BASELINE_Y; })
+          .style("opacity", function(d) {
+            return rectWidth(d) > this.getComputedTextLength() + TEXT_PADDING_X
+              && rectHeight(d) > TEXT_BASELINE_Y
+              ? 1
+              : 0;
+          });
+    }
+
     function rect(rect) {
       rect.attr("x", function(d) { return x(d.x); })
           .attr("y", function(d) { return y(d.y); })
@@ -250,22 +253,6 @@ privately( function(){
           .attr("height", rectHeight)
           .attr("fill", function(d) { return d.color; });
     }
-
-    function hideOverflowingText(g) {
-      var text = g.selectAll("text");
-      text.style("opacity", function(d) {
-        if (
-             rectWidth(d) > this.getComputedTextLength() + TEXT_PADDING_X
-          && rectHeight(d) > TEXT_BASELINE_Y
-        ) {
-          return 1;
-        } else {
-          return 0;
-        };
-      });
-    }
-
-
 
     function name(d) {
       return d.parent
