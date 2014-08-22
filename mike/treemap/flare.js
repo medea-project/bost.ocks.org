@@ -214,8 +214,8 @@ privately( function(){
       text.attr("x", function(d) { return x(d.x) + PADDING_X; })
           .attr("y", function(d) { return y(d.y) + PADDING_Y; })
           .style("opacity", function(d) {
-            d.w = this.getComputedTextLength() + PADDING_X;
-            return d.dx > d.w ? 1 : 0;
+            var textWidth = this.getComputedTextLength() + PADDING_X;
+            return x(d.dx) > textWidth ? 1 : 0;
           });
     }
 
