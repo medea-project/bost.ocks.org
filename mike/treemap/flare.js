@@ -167,9 +167,9 @@ privately( function(){
 
       g.append("rect")
           .attr("class", "parent")
-          .call(rect)
-        .append("title")
-          .text(function(d) { return formatNumber(d.value); });
+          .call(rect);
+      //  .append("title")
+      //    .text(function(d) { return formatNumber(d.value); });
 
       /* Do not display text of parent nodes
       g.append("text")
