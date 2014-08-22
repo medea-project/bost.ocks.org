@@ -28,24 +28,6 @@ privately( function(){
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .style("shape-rendering", "crispEdges");
 
-  svg.append("text")
-     .attr("id", "text-ruler")
-     .style("visibility", "hidden")
-     .text("placeholder");
-
-  function getTextDimensions( text ) {
-    var
-      textRuler = document.getElementById("text-ruler"),
-      box;
-
-    textRuler.firstChild.data = text;
-    box = textRuler.getBBox();
-    return {
-      width: box.width,
-      height: box.height
-    };
-  }
-
   var grandparent = svg.append("g")
       .attr("class", "grandparent");
 
