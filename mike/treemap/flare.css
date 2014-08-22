@@ -12,6 +12,7 @@ text {
 
 .grandparent text {
   font-weight: bold;
+  fill: white;
 }
 
 rect {
@@ -25,11 +26,11 @@ rect.parent,
 }
 
 .grandparent rect {
-  fill: orange;
+  fill: black;
 }
 
 .grandparent:hover rect {
-  fill: #ee9700;
+  fill: #777;
 }
 
 .grandparent rect {
