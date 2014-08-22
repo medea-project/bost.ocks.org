@@ -28,6 +28,24 @@ privately( function(){
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .style("shape-rendering", "crispEdges");
 
+  svg.append("text")
+     .attr("id", "text-ruler")
+     .style("visibility", "hidden")
+     .text("placeholder");
+
+  function getTextDimensions( text ) {
+    var
+      textRuler = document.getElementById("text-ruler"),
+      box;
+
+    textRuler.firstChild.data = text;
+    box = textRuler.getBBox();
+    return {
+      width: box.width,
+      height: box.height
+    };
+  }
+
   var grandparent = svg.append("g")
       .attr("class", "grandparent");
 
@@ -49,6 +67,10 @@ privately( function(){
       value: 0
     };
   }
+
+  var
+    TEXT_PADDING_X = 5,
+    TEXT_BASELINE_Y = 10;
 
   var
     CONTINENT_KEY = 'WMO Region Symbol',
@@ -102,7 +124,8 @@ privately( function(){
 
     initialize(root);
     layout(root);
-    display(root);
+    var g = display(root);
+    hideOverflowingText(g);
 
     function initialize(root) {
       root.x = root.y = 0;
@@ -198,6 +221,8 @@ privately( function(){
         // Remove the old node when the transition is finished.
         t1.remove().each("end", function() {
           svg.style("shape-rendering", "crispEdges");
+          // adjust text visibility
+          hideOverflowingText(g2);
           transitioning = false;
         });
       }
@@ -206,25 +231,41 @@ privately( function(){
     }
 
     function text(text) {
-      var
-        PADDING_X = 5,
-        PADDING_Y = 10;
+      text.attr("x", function(d) { return x(d.x) + TEXT_PADDING_X; })
+          .attr("y", function(d) { return y(d.y) + TEXT_BASELINE_Y; });
+    }
 
-      text.attr("x", function(d) { return x(d.x) + PADDING_X; })
-          .attr("y", function(d) { return y(d.y) + PADDING_Y; })
-          .style("opacity", function(d) {
-            var textWidth = this.getComputedTextLength() + PADDING_X;
-            return x(d.dx) > textWidth ? 1 : 0;
-          });
+    function rectWidth(d) {
+      return x(d.x + d.dx) - x(d.x);
+    }
+
+    function rectHeight(d) {
+      return y(d.y + d.dy) - y(d.y);
     }
 
     function rect(rect) {
       rect.attr("x", function(d) { return x(d.x); })
           .attr("y", function(d) { return y(d.y); })
-          .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
-          .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
           .attr("fill", function(d) { return d.color; });
     }
+
+    function hideOverflowingText(g) {
+      var text = g.selectAll("text");
+      text.style("opacity", function(d) {
+        if (
+             rectWidth(d) > this.getComputedTextLength() + TEXT_PADDING_X
+          && rectHeight(d) > TEXT_BASELINE_Y
+        ) {
+          return 1;
+        } else {
+          return 0;
+        };
+      });
+    }
+
+
 
     function name(d) {
       return d.parent
