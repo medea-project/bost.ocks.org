@@ -149,7 +149,6 @@ privately( function(){
 
       g.filter(function(d) { return d._children; })
           .classed("children", true);
-//          .on("click", transition);
 
       var childCell =
         g.selectAll(".child")
