@@ -22,7 +22,7 @@ privately( function(){
     document.getElementById( ids[ids.length-1] ).checked = true;
   });
 
-  var margin = {top: 20, right: 0, bottom: 0, left: 0},
+  var margin = {top: 40, right: 0, bottom: 0, left: 0},
       width = 960,
       height = 500 - margin.top - margin.bottom,
       formatNumber = d3.format(",d"),
@@ -60,8 +60,8 @@ privately( function(){
       .attr("height", margin.top);
 
   grandparent.append("text")
-      .attr("x", 6)
-      .attr("y", 6 - margin.top)
+      .attr("x", 12)
+      .attr("y", 12 - margin.top)
       .attr("dy", ".75em");
 
   function createTreeNode( name, type ) {

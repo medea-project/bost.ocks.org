@@ -12,8 +12,8 @@ text {
 }
 
 .grandparent text {
-  font-weight: bold;
-  fill: white;
+  font-size: 18px;
+  fill: #ff9;
 }
 
 rect {
