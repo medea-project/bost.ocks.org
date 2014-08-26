@@ -1,5 +1,5 @@
 privately( function(){
-  var ar = 'all';
+  var arFilter = 'ALL';
 
   privately(function(){
     var
@@ -15,7 +15,7 @@ privately( function(){
     forEach( ids, function( id ) {
       var input = document.getElementById( id );
       input.onclick = function(){
-        ar = input.value;
+        arFilter = input.value;
       };
     });
 
@@ -36,9 +36,14 @@ privately( function(){
       .domain([0, height])
       .range([0, height]);
 
+  function getValue( node ) {
+    return node[ arFilter ];
+  }
+
   var treemap = d3.layout.treemap()
       .children(function(d, depth) { return depth ? null : d._children; })
-      .sort(function(a, b) { return a.value - b.value; })
+      .sort(function(a, b) { return getValue(a) - getValue(b); })
+      .value( getValue )
       .ratio(height / width * 0.5 * (1 + Math.sqrt(5)))
       .round(false);
 
@@ -69,7 +74,12 @@ privately( function(){
       name: name,
       type: type,
       _children: [],
-      value: 0
+      AR1: 0,
+      AR2: 0,
+      AR3: 0,
+      AR4: 0,
+      AR5: 0,
+      ALL: 0
     };
   }
 
@@ -95,20 +105,23 @@ privately( function(){
 
       forEach( rows, function( row ) {
         var
+          AR = "AR",
           COUNT_KEY = "Total",
+          ar = row[AR],
           count = Number( row[COUNT_KEY] ),
           node = root,
           color = null;
 
         forEachProperty( row, function( value, key ) {
-          node.value += count;
+          node[ar] += count;
+          node.ALL += count;
           node.color = color;
 
           if ( colorScales.hasOwnProperty( key ) ) {
             color = colorScales[ key ]( value );
           }
 
-          if ( key === COUNT_KEY ) {
+          if ( key === AR || key === COUNT_KEY ) {
             delete node._children;
             return;
           }
