@@ -1,5 +1,7 @@
 privately( function(){
-  var arFilter = 'ALL';
+  var
+    arFilter = 'ALL',
+    refreshTreemap = function(){};
 
   privately(function(){
     var
@@ -16,6 +18,7 @@ privately( function(){
       var input = document.getElementById( id );
       input.onclick = function(){
         arFilter = input.value;
+        refreshTreemap();
       };
     });
 
@@ -257,6 +260,11 @@ privately( function(){
           transitioning = false;
         });
       }
+
+      refreshTreemap = function() {
+        layout(d);
+        transition(d);
+      };
 
       return g;
     }
