@@ -4,6 +4,7 @@
   width: 960px;
   height: 500px;
   background: #ddd;
+  margin: 0;
 }
 
 text {
@@ -41,4 +42,30 @@ rect.has-children {
 .children:hover rect.child {
   /* fill: #bbb; */
   fill-opacity: .5;
+}
+
+aside.hint {
+  width: 300px;
+  top: 90px;
+  text-align: right;
+}
+
+fieldset.radio {
+  margin: 5px 0 0;
+  padding: 0;
+}
+
+ol.radio, ol.radio > li {
+  margin: 0;
+  padding: 0;
+}
+
+ol.radio > li {
+  display: inline-block;
+  width: 15%;
+  text-align: center;
+}
+
+#radio-ar-all {
+  width: 20%;
 }

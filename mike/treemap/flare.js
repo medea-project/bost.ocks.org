@@ -1,4 +1,27 @@
 privately( function(){
+  var ar = 'all';
+
+  privately(function(){
+    var
+      ids = [
+        'radio-ar1',
+        'radio-ar2',
+        'radio-ar3',
+        'radio-ar4',
+        'radio-ar5',
+        'radio-all-ar'
+      ];
+
+    forEach( ids, function( id ) {
+      var input = document.getElementById( id );
+      input.onclick = function(){
+        ar = input.value;
+      };
+    });
+
+    document.getElementById( ids[ids.length-1] ).checked = true;
+  });
+
   var margin = {top: 20, right: 0, bottom: 0, left: 0},
       width = 960,
       height = 500 - margin.top - margin.bottom,
