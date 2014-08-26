@@ -178,7 +178,7 @@ privately( function(){
     function display(d) {
       grandparent
           .datum(d.parent? d.parent.parent : null)
-          .on("click", transition)
+          .on("click", function(d) { transition(d, 500); })
         .select("text")
           .text(name(d));
 
@@ -201,7 +201,7 @@ privately( function(){
       childCell.append("rect")
           .attr("class", "child")
           .classed("has-children", function(d) { return d._children; })
-          .on("click", transition)
+          .on("click", function(d){ transition(d, 1000) })
           .call(rect)
         .append("title")
           .text(function(d) { return d.name; });
@@ -211,13 +211,14 @@ privately( function(){
           .text(function(d) { return d.name; })
           .call(text);
 
-      function transition(d) {
+      function transition(d, duration) {
         if (transitioning || !d || !d._children) return;
+        duration = or(duration, 0);
         transitioning = true;
 
         var g2 = display(d),
-            t1 = g1.transition().duration(750),
-            t2 = g2.transition().duration(750);
+            t1 = g1.transition().duration(duration),
+            t2 = g2.transition().duration(duration);
 
         // Update the domain only after entering new elements.
         x.domain([d.x, d.x + d.dx]);

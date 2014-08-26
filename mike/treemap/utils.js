@@ -1,4 +1,37 @@
 /*
+  Check whether given value is null or undefined
+
+  Parameter:
+    value - any, the value to check
+
+  Returns:
+    boolean, false when the value is null or undefined,
+    true otherwise
+*/
+function no( value ) {
+  var undef; // do not trust global undefined, which can be set to a value
+  return value === null || value === undef;
+}
+
+/*
+  Get a default value when given value is null or undefined
+
+  Parameters:
+    a - any, the value to check
+    b - any, the default value
+
+  Returns:
+    any, the default value when the value is null or undefined,
+    the value itself otherwise.
+
+  Dependency:
+    nada/no.js
+*/
+function or( a, b ) {
+  return no( a )? b: a;
+}
+
+/*
   Run the given function and return the result
 
   This function is useful to create a private scope for the declaration
