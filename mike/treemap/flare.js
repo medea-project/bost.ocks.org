@@ -151,6 +151,10 @@ privately( function(){
           .classed("children", true)
           .on("click", transition);
 
+      g.append("rect")
+          .attr("class", "parent")
+          .call(rect);
+
       var childCell =
         g.selectAll(".child")
           .data(function(d) { return d._children || [d]; })
@@ -158,11 +162,15 @@ privately( function(){
 
       childCell.append("rect")
           .attr("class", "child")
-          .call(rect);
-
-      g.append("rect")
-          .attr("class", "parent")
-          .call(rect);
+          .call(rect)
+        .append("title")
+          .text(function(d) {
+            return d.name +
+            ' (' +
+              d.value +
+              ' participation' + (d.value===1?'':'s') +
+            ')';
+          });
 
       if ( d.type === 'root' ) {
         /* display text of children */
