@@ -32,7 +32,7 @@ rect.parent,
   fill: #ee9700;
 }
 
-.children rect.parent,
+.children,
 .grandparent rect {
   cursor: pointer;
 }
