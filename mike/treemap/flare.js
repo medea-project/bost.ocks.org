@@ -50,6 +50,16 @@ privately( function(){
     };
   }
 
+  var
+    CONTINENT_KEY = 'WMO Region',
+    INSTITUTION_TYPE_KEY = 'Institution Type',
+    ROLE_KEY = 'Role',
+    colorScales = {};
+
+  colorScales[ CONTINENT_KEY ] = d3.scale.category10();
+  // colorScales[ INSTITUTION_TYPE_KEY ] = d3.scale.category20();
+  // colorScales[ ROLE_KEY ] = d3.scale.category20b();
+
   d3.tsv(
     "count-participations-by-ar-author-role-institution-country.tsv",
     function(rows) {
@@ -60,10 +70,16 @@ privately( function(){
         var
           COUNT_KEY = "Total",
           count = Number( row[COUNT_KEY] ),
-          node = root;
+          node = root,
+          color = null;
 
         forEachProperty( row, function( value, key ) {
+          if ( colorScales.hasOwnProperty( key ) ) {
+            color = colorScales[ key ]( value );
+          }
+
           node.value += count;
+          node.color = color;
 
           if ( key === COUNT_KEY ) {
             delete node._children;
@@ -198,7 +214,8 @@ privately( function(){
       rect.attr("x", function(d) { return x(d.x); })
           .attr("y", function(d) { return y(d.y); })
           .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
-          .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); });
+          .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
+          .attr("fill", function(d) { return d.color; });
     }
 
     function name(d) {

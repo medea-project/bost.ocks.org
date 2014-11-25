@@ -15,7 +15,7 @@ text {
 }
 
 rect {
-  fill: none;
+  /* fill: none; */
   stroke: #fff;
 }
 
