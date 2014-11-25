@@ -43,5 +43,6 @@ rect.parent,
 }
 
 .children:hover rect.child {
-  fill: #bbb;
+  /* fill: #bbb; */
+  fill-opacity: .5;
 }
