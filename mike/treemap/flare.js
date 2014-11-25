@@ -176,7 +176,7 @@ privately( function(){
     function display(d) {
       grandparent
           .datum(d.parent)
-          .on("click", transition)
+          .on("click", function(d) { transition(d, 500); })
         .select("text")
           .text(name(d));
 
@@ -190,7 +190,7 @@ privately( function(){
 
       g.filter(function(d) { return d._children; })
           .classed("children", true)
-          .on("click", transition);
+          .on("click", function(d){ transition(d, 1000) });
 
       g.append("rect")
           .attr("class", "parent")
@@ -227,13 +227,14 @@ privately( function(){
             .call(text);
       }
 
-      function transition(d) {
+      function transition(d, duration) {
         if (transitioning || !d) return;
+        duration = or(duration, 0);
         transitioning = true;
 
         var g2 = display(d),
-            t1 = g1.transition().duration(750),
-            t2 = g2.transition().duration(750);
+            t1 = g1.transition().duration(duration),
+            t2 = g2.transition().duration(duration);
 
         // Update the domain only after entering new elements.
         x.domain([d.x, d.x + d.dx]);
