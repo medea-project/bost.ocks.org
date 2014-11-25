@@ -164,7 +164,11 @@ privately( function(){
           .attr("class", "parent")
           .call(rect)
         .append("title")
-          .text(function(d) { return formatNumber(d.value); });
+          .text(function(d) {
+            return formatNumber(d.value) +
+                   ' participation' +
+                   (d.value !== 1? 's': '');
+          });
 
       if ( d.type === 'root' ) {
         /* display text of children */
