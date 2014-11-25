@@ -162,13 +162,7 @@ privately( function(){
 
       g.append("rect")
           .attr("class", "parent")
-          .call(rect)
-        .append("title")
-          .text(function(d) {
-            return formatNumber(d.value) +
-                   ' participation' +
-                   (d.value !== 1? 's': '');
-          });
+          .call(rect);
 
       if ( d.type === 'root' ) {
         /* display text of children */
