@@ -151,9 +151,12 @@ privately( function(){
           .classed("children", true)
           .on("click", transition);
 
-      g.selectAll(".child")
+      var childCell =
+        g.selectAll(".child")
           .data(function(d) { return d._children || [d]; })
-        .enter().append("rect")
+        .enter();
+
+      childCell.append("rect")
           .attr("class", "child")
           .call(rect);
 
@@ -163,10 +166,19 @@ privately( function(){
         .append("title")
           .text(function(d) { return formatNumber(d.value); });
 
-      g.append("text")
-          .attr("dy", ".75em")
-          .text(function(d) { return d.name; })
-          .call(text);
+      if ( d.type === 'root' ) {
+        /* display text of children */
+        childCell.append("text")
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name; })
+            .call(text);
+      } else {
+        /* display text of parent */
+        g.append("text")
+            .attr("dy", ".75em")
+            .text(function(d) { return d.name; })
+            .call(text);
+      }
 
       function transition(d) {
         if (transitioning || !d) return;
